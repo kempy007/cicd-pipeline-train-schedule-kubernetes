@@ -16,7 +16,7 @@ pipeline {
 //        }
 //    }
     environment {
-        DOCKER_IMAGE_NAME = "ds2mk/train-schedule"
+        DOCKER_IMAGE_NAME = "willbla/train-schedule"
     }
     stages {
         stage('Build') {
