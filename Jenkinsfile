@@ -20,6 +20,7 @@ pipeline {
     }
     stages {
         stage('Build') {
+            when { branch 'master' }
             steps {
                 echo 'Running build automation'
                 sh './gradlew build --no-daemon'
@@ -27,6 +28,7 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
+            when { branch 'master' }
             agent { kubernetes { label 'dind' } }
             steps {
                 script {
@@ -38,6 +40,7 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
+            when { branch 'master' }
             agent { kubernetes { label 'dind' } }
             steps {
                 script {
