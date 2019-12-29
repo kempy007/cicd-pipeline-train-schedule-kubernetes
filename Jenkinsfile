@@ -1,5 +1,18 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            label 'nested-pod'
+            yaml """
+spec:
+containers:
+- name: maven
+image: maven:3.3.9-jdk-8-alpine
+command:
+- cat
+tty: true
+    """
+        }
+    }
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "willbla/train-schedule"
