@@ -1,7 +1,8 @@
 pipeline {
-    agent {
-        kubernetes {
-            label 'maven'
+    agent any
+//    agent {
+//        kubernetes {
+//            label 'dind'
 //            label 'nested-pod'
 //            yaml """
 //spec:
@@ -12,11 +13,10 @@ pipeline {
 //- cat
 //tty: true
 //    """
-        }
-    }
+//        }
+//    }
     environment {
-        //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "willbla/train-schedule"
+        DOCKER_IMAGE_NAME = "ds2mk/train-schedule"
     }
     stages {
         stage('Build') {
@@ -27,6 +27,7 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
+            agent { kubernetes { label 'dind' } }
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
@@ -37,6 +38,7 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
+            agent { kubernetes { label 'dind' } }
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
